@@ -27,10 +27,7 @@ final int GAMEWON = 3;
 final int GAMEOVER = 4;
 int mode = INTRO;
 
-final int PLAYERBEGIN = 0;
-final int PLAYERPLACE = 1;
-final int PLAYERSHOOT = 2;
-int gameState = PLAYERSHOOT;
+
 
 int[] ballArrangement = new int[15];
 

@@ -41,15 +41,7 @@ void game() {
   circle(480, 521, 28*2);
   */
 
-  for (int i = 1; i < myBalls.length; i++) {
-    if (myBalls[i] != null) {
-      FBody b1 = world.getBody(myBalls[i].pos.x, myBalls[i].pos.y);
-      if (pb.isTouchingBody(b1)) {
-        firstContact = i;
-        break;
-      }
-    }
-  }
+  setFirstContact();
 
   int gameWon = 0;
   for (int i = 0; i < myBalls.length; i++) {
@@ -102,7 +94,19 @@ void game() {
 
   if (gameWon == 0 || keyPressed && key=='5') mode = GAMEWON;
   if (keyPressed && key == '6') mode = GAMEOVER;
+  
+  subModeSwitch();
+}
 
+final int PLAYERBEGIN = 0;
+final int PLAYERPLACE = 1;
+final int PLAYERSHOOT = 2;
+final int PLAYERMOVING = 3;
+int gameState = PLAYERSHOOT;
+
+
+
+void subModeSwitch() {
   switch(gameState) { // Potential for V4 with proper game rules, two player, and proper velocity input
   case PLAYERBEGIN:
     playerBegin();
@@ -113,36 +117,22 @@ void game() {
   case PLAYERSHOOT:
     playerShoot();
     break;
+  case PLAYERMOVING:
+    playerMoving();
+    break;
   default:
     println("GAMESTATE ERROR. ERROR = " + gameState);
   }
 }
 
-void ddraw() {
-  switch(gameState) {
-  case BEGIN:
-    println("PLAYERBEGIN");
-    break;
-  case PLAYER1AIM:
-    println("PLAYER1AIM");
-    break;
-  case PLAYER1SHOOT:
-    println("PLAYER1SHOOTING");
-    break;
-  case PLAYER1PLACE:
-    println("PLAYER1PLACING");
-    break;
-  case PLAYER2AIM:
-    println("PLAYER1AIM");
-    break;
-  case PLAYER2SHOOT:
-    println("PLAYER1SHOOTING");
-    break;
-  case PLAYER2PLACE:
-    println("PLAYER1PLACING");
-    break;
-  case INMOTION:
-    println("INMOTION");
-    break;
+void setFirstContact() {
+    for (int i = 1; i < myBalls.length; i++) {
+    if (myBalls[i] != null) {
+      FBody b1 = world.getBody(myBalls[i].pos.x, myBalls[i].pos.y);
+      if (pb.isTouchingBody(b1)) {
+        firstContact = i;
+        break;
+      }
+    }
   }
 }
