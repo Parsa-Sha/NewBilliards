@@ -43,16 +43,26 @@ void game() {
 
   setFirstContact();
 
+  ballPocketed();
+
+  if (gameWon == 0 || keyPressed && key=='5') mode = GAMEWON;
+  if (keyPressed && key == '6') mode = GAMEOVER;
+  
+  subModeSwitch();
+}
+
   int gameWon = 0;
+void ballPocketed() {
+  gameWon = 0;
   for (int i = 0; i < myBalls.length; i++) {
-    Ball b = myBalls[i];
+    Ball b = myBalls[i]; // For every ball, check if it has been pocketed
     if ( b != null &&
-      (dist(b.getX(), b.getY(), 45, 97) < 28 ||
-      dist(b.getX(), b.getY(), 45, 503) < 28 ||
-      dist(b.getX(), b.getY(), 915, 97) < 28 ||
-      dist(b.getX(), b.getY(), 915, 503) < 28 ||
-      dist(b.getX(), b.getY(), 480, 78) < 28 ||
-      dist(b.getX(), b.getY(), 480, 521) < 28)
+    (dist(b.getX(), b.getY(), 45, 97) < 28 || // If ball is inside holes
+    dist(b.getX(), b.getY(), 45, 503) < 28 ||
+    dist(b.getX(), b.getY(), 915, 97) < 28 ||
+    dist(b.getX(), b.getY(), 915, 503) < 28 || 
+    dist(b.getX(), b.getY(), 480, 78) < 28 ||
+    dist(b.getX(), b.getY(), 480, 521) < 28)
       ) {
       if (i == 0 || (i == 8 && !allBallsBut8[int(turn)])) mode = GAMEOVER;
       if (i == 8 && allBallsBut8[int(turn)]) mode = GAMEWON;
@@ -69,7 +79,7 @@ void game() {
             turn && i > 8 && i < 16
             ) anotherTurn = true;
         }
-      } else { // If teams have not been decided, set based on teams
+      } else { // If teams have not been decided, set teams based on ball pocketed
         if (
           turn && i > 0 && i < 8 ||
           !turn && i > 8 && i < 16
@@ -91,20 +101,14 @@ void game() {
     }
     gameWon += i;
   }
-
-  if (gameWon == 0 || keyPressed && key=='5') mode = GAMEWON;
-  if (keyPressed && key == '6') mode = GAMEOVER;
-  
-  subModeSwitch();
 }
+
 
 final int PLAYERBEGIN = 0;
 final int PLAYERPLACE = 1;
 final int PLAYERSHOOT = 2;
 final int PLAYERMOVING = 3;
 int gameState = PLAYERSHOOT;
-
-
 
 void subModeSwitch() {
   switch(gameState) { // Potential for V4 with proper game rules, two player, and proper velocity input

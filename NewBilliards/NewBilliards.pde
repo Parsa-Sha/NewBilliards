@@ -27,8 +27,6 @@ final int GAMEWON = 3;
 final int GAMEOVER = 4;
 int mode = INTRO;
 
-
-
 int[] ballArrangement = new int[15];
 
 boolean newGame = true;
